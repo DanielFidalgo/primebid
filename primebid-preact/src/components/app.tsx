@@ -1,23 +1,47 @@
-import { FunctionalComponent, h } from 'preact';
+import { FunctionalComponent, h, createContext } from 'preact';
 import { Route, Router } from 'preact-router';
 
 import Home from '../routes/home';
-import Profile from '../routes/profile';
 import NotFoundPage from '../routes/notfound';
+import SignedOut from '../routes/signedout';
+import SignUp from '../routes/sign_up';
 import Header from './header';
+import firebase from '../services/firebase'
+import { UserState, UserStatus} from "../services/UserState";
+import { useState, useEffect, useContext } from 'preact/hooks';
+import Login from './login';
 
-const App: FunctionalComponent = () => {
-    return (
-        <div id="app">
-            <Header />
-            <Router>
-                <Route path="/" component={Home} />
-                <Route path="/profile/" component={Profile} user="me" />
-                <Route path="/profile/:user" component={Profile} />
-                <NotFoundPage default />
-            </Router>
-        </div>
-    );
+
+const App: FunctionalComponent = (props, state) => {
+
+        const [userState, setUserState] = useState<UserState>(new UserState(undefined))
+        useEffect( () => {
+                        const authStateObserver = (user: firebase.User | null) => {
+                            if (user) {
+                                setUserState(new UserState(user))
+                            }
+                            else {
+                                setUserState(new UserState(null))
+                            }
+                        }
+                        firebase.auth().onAuthStateChanged(authStateObserver)
+        });
+        return (
+                <div id="app">
+                    <Header user={userState}/>
+                    <Router>
+                        {userState.value 
+                            ? <Route path="/" component={Home} />
+                            : <Route path="/" component={SignedOut} />
+                        }
+                        {!userState.value &&
+                         <Route path="/sign-up" component={SignUp} />
+                        }
+                        <NotFoundPage default />
+                    </Router>
+                    <Login/>
+                </div>
+            ); 
 };
 
 export default App;

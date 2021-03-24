@@ -20,6 +20,10 @@
 	font-weight: 400;
 	color: #FFF;
 }
+.header h1 a {
+	color: #FFF;
+	text-decoration: none;	
+}
 
 .header nav {
 	float: right;

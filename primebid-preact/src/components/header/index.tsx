@@ -1,21 +1,38 @@
 import { FunctionalComponent, h } from 'preact';
 import { Link } from 'preact-router/match';
 import style from './style.css';
+import { useContext } from 'preact/hooks';
+import { UserState } from '../../services/UserState';
+import { showLogin } from '../login';
 
-const Header: FunctionalComponent = () => {
+interface IHeaderProps {
+    user?: UserState
+}
+
+const Header: FunctionalComponent<IHeaderProps> = (props:IHeaderProps) => {
     return (
         <header class={style.header}>
-            <h1>PrimeBid</h1>
+            <h1>
+                <Link activeClassName={style.active} href="/">
+                    PrimeBid
+                </Link>
+            </h1>
             <nav>
+               {!props.user.value && 
+                <Link activeClassName={style.active} href="/sign-up">
+                    Sign up
+                </Link>
+                }
+                {!props.user.value && 
+                <Link onClick={showLogin} >
+                    Login
+                </Link>
+                }
+                {props.user.value &&
                 <Link activeClassName={style.active} href="/">
                     Home
                 </Link>
-                <Link activeClassName={style.active} href="/profile">
-                    Me
-                </Link>
-                <Link activeClassName={style.active} href="/profile/john">
-                    John
-                </Link>
+                }
             </nav>
         </header>
     );
