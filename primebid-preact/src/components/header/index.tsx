@@ -3,10 +3,9 @@ import { Link } from 'preact-router/match';
 import style from './style.css';
 import { useContext } from 'preact/hooks';
 import { UserState } from '../../services/UserState';
-import { showLogin } from '../login';
 
 interface IHeaderProps {
-    user?: UserState
+    user: UserState
 }
 
 const Header: FunctionalComponent<IHeaderProps> = (props:IHeaderProps) => {
@@ -24,7 +23,7 @@ const Header: FunctionalComponent<IHeaderProps> = (props:IHeaderProps) => {
                 </Link>
                 }
                 {!props.user.value && 
-                <Link onClick={showLogin} >
+                <Link activeClassName={style.active} href="/login" >
                     Login
                 </Link>
                 }
