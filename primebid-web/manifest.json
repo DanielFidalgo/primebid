@@ -1,11 +1,11 @@
 {
-  "name": "primebid-preact",
-  "short_name": "primebid-preact",
+  "name": "primebid",
+  "short_name": "primebid",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#fff",
-  "theme_color": "#673ab8",
+  "theme_color": "#ff0000",
   "icons": [
     {
       "src": "/assets/icons/android-chrome-192x192.png",
